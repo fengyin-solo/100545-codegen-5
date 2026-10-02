@@ -19,6 +19,7 @@ const Report = () => import('@/views/report/index.vue')
 const Consult = () => import('@/views/consult/index.vue')
 const Clearance = () => import('@/views/clearance/index.vue')
 const Threat = () => import('@/views/threat/index.vue')
+const Aerial = () => import('@/views/aerial/index.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -42,6 +43,7 @@ const router = createRouter({
     { path: '/consult', name: 'consult', component: Consult },
     { path: '/clearance', name: 'clearance', component: Clearance },
     { path: '/threat', name: 'threat', component: Threat },
+    { path: '/aerial', name: 'aerial', component: Aerial },
   ],
 })
 

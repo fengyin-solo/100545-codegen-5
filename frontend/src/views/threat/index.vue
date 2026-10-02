@@ -22,6 +22,7 @@
       <span v-for="item in statusSummary" :key="item.status" class="legend-item">
         {{ item.status }}：{{ item.count }}
       </span>
+      <span class="legend-item legend-tip">「已归档」影像由航拍台账归档后自动登记，状态以航拍台账为准</span>
     </p>
 
     <form class="filter-bar" @submit.prevent="reload">
@@ -46,15 +47,20 @@
           <td v-for="column in columns" :key="column">{{ row[column] ?? '—' }}</td>
           <td>{{ row.status }}</td>
           <td class="row-actions">
-            <button
-              v-for="action in actions"
-              :key="action"
-              class="link"
-              type="button"
-              @click="runAction(action, row)"
-            >
-              {{ action }}
-            </button>
+            <template v-if="isLinkedImage(row)">
+              <span class="muted-text">已归档影像 {{ row['关联影像编号'] }}，随航拍台账流转</span>
+            </template>
+            <template v-else>
+              <button
+                v-for="action in actions"
+                :key="action"
+                class="link"
+                type="button"
+                @click="runAction(action, row)"
+              >
+                {{ action }}
+              </button>
+            </template>
           </td>
         </tr>
         <tr v-if="!rows.length">
@@ -84,7 +90,7 @@ import type { EntryRow } from '@/data/types'
 const meta = moduleMeta('threat')
 const columns = ["对象编号", "所属隐患点", "对象类型", "对象名称", "涉及人数", "最近距离", "联系人", "对象状态"]
 const actions = ["提交登记", "确认转移", "登记解除"]
-const statuses = ["待登记", "已登记", "已转移", "已解除"]
+const statuses = ["待登记", "已登记", "已转移", "已解除", "已归档"]
 const stats = [{"label": "已登记对象", "value": 0}, {"label": "已转移对象", "value": 0}, {"label": "涉及人数合计", "value": 0}]
 
 const rows = ref<EntryRow[]>([])
@@ -102,6 +108,11 @@ const statusSummary = computed(() =>
 function resetFilters() {
   filters.value = {}
   reload()
+}
+
+// 由航拍归档挂过来的影像记录不在本台账做流转，动作统一走航拍台账。
+function isLinkedImage(row: EntryRow): boolean {
+  return String(row['关联影像编号'] ?? '').trim() !== ''
 }
 
 function exportRows() {

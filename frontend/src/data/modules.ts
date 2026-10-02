@@ -200,6 +200,19 @@ export const MODULES: ModuleMeta[] = [
     actionTargets: {"提交登记": "已登记", "确认转移": "已转移", "登记解除": "已解除"},
     metrics: ["已登记对象", "已转移对象", "涉及人数合计"],
   },
+  {
+    key: "aerial",
+    name: "航拍影像任务归档台账",
+    entity: "航拍影像任务",
+    desc: "汛前排查无人机航拍台账，按航线名称归组，记录航拍架次、影像编号与归档状态；执行、上传、校核、归档依次流转，归档后落到受威胁对象台账。",
+    fields: ["影像编号", "航线名称", "航拍架次", "受威胁对象", "飞手", "航拍日期", "校核人", "归档日期", "归档状态"],
+    statuses: ["执行中", "已上传", "已校核", "已归档"],
+    actions: ["完成上传", "提交校核", "确认归档"],
+    actionTargets: {"完成上传": "已上传", "提交校核": "已校核", "确认归档": "已归档"},
+    metrics: ["执行中任务", "已归档影像", "航拍架次合计"],
+    orderedFlow: true,
+    trailField: "状态痕迹",
+  },
 ]
 
 export const MODULE_BY_KEY: Map<string, ModuleMeta> = new Map(
