@@ -1,5 +1,15 @@
 import type { EntryRow } from './types'
 
+function inheritedAerialTrace(at: string, status: string): string {
+  return JSON.stringify([{
+    at,
+    from: '',
+    to: status,
+    action: '沿用既有归档状态',
+    note: '历史记录导入，不回炉',
+  }])
+}
+
 // 示例数据：首次打开时播种，之后浏览器里的改动优先，重置才会回到这份。
 export const SEED_ROWS: Record<string, EntryRow[]> = {
   "hazard": [
@@ -750,6 +760,60 @@ export const SEED_ROWS: Record<string, EntryRow[]> = {
       "核销状态": "隐患核销样例3"
     }
   ],
+  "aerial": [
+    {
+      "id": 1,
+      "status": "执行中",
+      "pending": true,
+      "abnormal": false,
+      "影像编号": "AERI-2026-0001",
+      "航线名称": "青石沟左岸-A线",
+      "航拍架次": 2,
+      "受威胁对象编号": "THRE-0001",
+      "飞手": "王航",
+      "拍摄日期": "2026-09-01",
+      "归档轨迹": inheritedAerialTrace('2026-09-01 08:30', '执行中')
+    },
+    {
+      "id": 2,
+      "status": "已上传",
+      "pending": true,
+      "abnormal": false,
+      "影像编号": "AERI-2026-0002",
+      "航线名称": "大坪后缘-B线",
+      "航拍架次": 1,
+      "受威胁对象编号": "THRE-0002",
+      "飞手": "李飞",
+      "拍摄日期": "2026-09-02",
+      "归档轨迹": inheritedAerialTrace('2026-09-02 10:15', '已上传')
+    },
+    {
+      "id": 3,
+      "status": "已校核",
+      "pending": true,
+      "abnormal": false,
+      "影像编号": "AERI-2026-0003",
+      "航线名称": "南坡村前-C线",
+      "航拍架次": 3,
+      "受威胁对象编号": "THRE-0003",
+      "飞手": "王航",
+      "拍摄日期": "2026-09-03",
+      "归档轨迹": inheritedAerialTrace('2026-09-03 16:20', '已校核')
+    },
+    {
+      "id": 4,
+      "status": "已归档",
+      "pending": false,
+      "abnormal": false,
+      "影像编号": "AERI-2026-0004",
+      "航线名称": "南坡村前-C线",
+      "航拍架次": 4,
+      "受威胁对象编号": "THRE-0003",
+      "飞手": "赵影",
+      "拍摄日期": "2026-09-04",
+      "归档轨迹": inheritedAerialTrace('2026-09-04 11:05', '已归档')
+    }
+  ],
   "threat": [
     {
       "id": 1,
@@ -762,6 +826,7 @@ export const SEED_ROWS: Record<string, EntryRow[]> = {
       "对象名称": "受威胁对象样例1",
       "涉及人数": "受威胁对象样例1",
       "最近距离": "受威胁对象样例1",
+      "已归档影像": "—",
       "联系人": "受威胁对象样例1",
       "对象状态": "受威胁对象样例1"
     },
@@ -776,6 +841,7 @@ export const SEED_ROWS: Record<string, EntryRow[]> = {
       "对象名称": "受威胁对象样例2",
       "涉及人数": "受威胁对象样例2",
       "最近距离": "受威胁对象样例2",
+      "已归档影像": "—",
       "联系人": "受威胁对象样例2",
       "对象状态": "受威胁对象样例2"
     },
@@ -790,6 +856,7 @@ export const SEED_ROWS: Record<string, EntryRow[]> = {
       "对象名称": "受威胁对象样例3",
       "涉及人数": "受威胁对象样例3",
       "最近距离": "受威胁对象样例3",
+      "已归档影像": "AERI-2026-0004",
       "联系人": "受威胁对象样例3",
       "对象状态": "受威胁对象样例3"
     }

@@ -37,6 +37,7 @@
       <thead>
         <tr>
           <th v-for="column in columns" :key="column">{{ column }}</th>
+          <th>影像归档状态</th>
           <th>当前状态</th>
           <th>可执行动作</th>
         </tr>
@@ -44,6 +45,7 @@
       <tbody>
         <tr v-for="row in rows" :key="String(row.id)">
           <td v-for="column in columns" :key="column">{{ row[column] ?? '—' }}</td>
+          <td>{{ imageArchiveStatus(row) }}</td>
           <td>{{ row.status }}</td>
           <td class="row-actions">
             <button
@@ -58,7 +60,7 @@
           </td>
         </tr>
         <tr v-if="!rows.length">
-          <td :colspan="columns.length + 2" class="empty-state">暂无受威胁对象数据，可先登记受威胁对象</td>
+          <td :colspan="columns.length + 3" class="empty-state">暂无受威胁对象数据，可先登记受威胁对象</td>
         </tr>
       </tbody>
     </table>
@@ -75,6 +77,7 @@ import { computed, onMounted, ref } from 'vue'
 
 import {
   downloadEntries,
+  getAerialStatus,
   listEntries,
   moduleMeta,
   runAction as applyAction,
@@ -82,7 +85,7 @@ import {
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('threat')
-const columns = ["对象编号", "所属隐患点", "对象类型", "对象名称", "涉及人数", "最近距离", "联系人", "对象状态"]
+const columns = ["对象编号", "所属隐患点", "对象类型", "对象名称", "涉及人数", "最近距离", "已归档影像", "联系人", "对象状态"]
 const actions = ["提交登记", "确认转移", "登记解除"]
 const statuses = ["待登记", "已登记", "已转移", "已解除"]
 const stats = [{"label": "已登记对象", "value": 0}, {"label": "已转移对象", "value": 0}, {"label": "涉及人数合计", "value": 0}]
@@ -106,6 +109,18 @@ function resetFilters() {
 
 function exportRows() {
   downloadEntries(meta.key)
+}
+
+function imageArchiveStatus(row: EntryRow): string {
+  const imageIds = String(row.已归档影像 ?? '')
+    .split(/[、,，]\s*/)
+    .map((item) => item.trim())
+    .filter((item) => item !== '' && item !== '—')
+  if (!imageIds.length) {
+    return '无已归档影像'
+  }
+  const statuses = [...new Set(imageIds.map((imageId) => getAerialStatus(imageId)).filter(Boolean))]
+  return statuses.length ? statuses.join('、') : '无已归档影像'
 }
 
 function openCreate() {

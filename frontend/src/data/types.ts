@@ -32,6 +32,29 @@ export type ActionResult = {
   message: string
 }
 
+export type AerialStatusTrace = {
+  at: string
+  from: string
+  to: string
+  action: string
+  note?: string
+}
+
+export type AerialImportInput = {
+  imageId: string
+  routeName: string
+  sortie: number | string
+  threatObjectId: string
+  pilot?: string
+  shotDate?: string
+}
+
+export type AerialLedgerGroup = {
+  routeName: string
+  pending: boolean
+  items: EntryRow[]
+}
+
 export type OverviewResult = {
   cards: { label: string; value: number }[]
   modules: { name: string; created: number; pending: number; abnormal: number }[]

@@ -18,6 +18,7 @@ const Signboard = () => import('@/views/signboard/index.vue')
 const Report = () => import('@/views/report/index.vue')
 const Consult = () => import('@/views/consult/index.vue')
 const Clearance = () => import('@/views/clearance/index.vue')
+const Aerial = () => import('@/views/aerial/index.vue')
 const Threat = () => import('@/views/threat/index.vue')
 
 const router = createRouter({
@@ -41,6 +42,7 @@ const router = createRouter({
     { path: '/report', name: 'report', component: Report },
     { path: '/consult', name: 'consult', component: Consult },
     { path: '/clearance', name: 'clearance', component: Clearance },
+    { path: '/aerial', name: 'aerial', component: Aerial },
     { path: '/threat', name: 'threat', component: Threat },
   ],
 })
